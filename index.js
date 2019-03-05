@@ -30,11 +30,18 @@ function createDeck(){
           deck.push(card)
           //console.log(deck);
         }
+<<<<<<< HEAD
+=======
+        //console.log(cardValue);
+>>>>>>> master
     }
   }
+  console.log(deck);
   return deck
 }//end of createDeck
 createDeck()
+//console.log(deck);
+
 
 function shuffleDeck(deck){
   let card1 = deck[Math.floor(Math.random()*deck.length)]
