@@ -1,12 +1,11 @@
 let cards = {suit:["Hearts", "Diamonds", "Clubs", "Spades"],
 value:["Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King"]}
 
+let deck = []
 let player_hand = []
 let dealer_hand = []
 let suit = cards.suit
 let value = cards.value
-let deck = []
-
 
 // creates the deck for the game and sets the value of each card!!!!!
 function createDeck(){
@@ -15,19 +14,31 @@ function createDeck(){
     for (j = 0; j < value.length; j ++) {
       if(value[j] === "Ace"){
         let cardValue = 1
+          let card = {Value: value[j], Suit: suit[i], CardValue: cardValue}
+            deck.push(card)
+        //console.log(cardValue);
       } else if (value[j] === "Jack" || value[j] === "Queen" || value[j] === "King") {
           let cardValue = 10
+          let card = {Value: value[j], Suit: suit[i], CardValue: cardValue}
+          deck.push(card)
+          //console.log(cardValue);
         } else {
-          let cardValue = parseInt(value[j])
-      }
-      let card = {Value: value[j], Suit: suit[i]}
-      deck.push(card)
+           let cardValue = parseInt(value[j])
+          //console.log(cardValue);
+          let card = {Value: value[j], Suit: suit[i], CardValue: cardValue}
+          //console.log(card);
+          deck.push(card)
+          //console.log(deck);
+        }
+        //console.log(cardValue);
     }
   }
+  console.log(deck);
   return deck
-}
-
+}//end of createDeck
 createDeck()
+//console.log(deck);
+
 
 // function dealCards(){
 // }
