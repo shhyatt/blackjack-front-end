@@ -7,6 +7,10 @@ let dealer_hand = []
 let suit = cards.suit
 let value = cards.value
 
+document.addEventListener("DOMContentLoaded", e => {
+
+
+
 // creates the deck for the game and sets the value of each card!!!!!
 function createDeck(){
   deck = []
@@ -33,11 +37,39 @@ function createDeck(){
         //console.log(cardValue);
     }
   }
-  console.log(deck);
+  //console.log(deck);
   return deck
 }//end of createDeck
 createDeck()
 //console.log(deck);
+function shuffleDeck(deck){
+  let userCard1 = deck[Math.floor(Math.random()*deck.length)]
+  let indexOfUserCard1 = deck.indexOf(userCard1)
+  deck.splice(indexOfUserCard1, 1)
+  // console.log(deck);
+  let userCard2 = deck[Math.floor(Math.random()*deck.length)]
+  let indexOfUserCard2 = deck.indexOf(userCard2)
+  deck.splice(indexOfUserCard2, 1)
+  let dealerCard1 = deck[Math.floor(Math.random()*deck.length)]
+  let indexOfDealerCard1 = deck.indexOf(dealerCard1)
+  deck.splice(indexOfDealerCard1, 1)
+  let dealerCard2 = deck[Math.floor(Math.random()*deck.length)]
+  let indexOfDealerCard2 = deck.indexOf(dealerCard2)
+  deck.splice(indexOfDealerCard2, 1)
+  // console.log(userCard1, indexOfUserCard1);
+  console.log(userCard1, userCard2, dealerCard1, dealerCard2)
+  console.log(indexOfUserCard1, indexOfUserCard2, indexOfDealerCard1, indexOfDealerCard2);
+  console.log(deck);
+  return deck
+}//end shuffleDeck
+// console.log(shuffleDeck(deck));
+shuffleDeck(deck)
+
+
+
+})
+//console.log(deck);
+
 
 
 // function dealCards(){
