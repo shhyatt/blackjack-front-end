@@ -70,12 +70,4 @@ shuffleDeck(deck)
 })
 //console.log(deck);
 
-
-
-// function dealCards(){
-// }
-// console.log(suit);
-
-// let pickSuit = suit => {
-// suit[Math.floor(Math.random() * suit.length)]
-// }
+//merging with master
