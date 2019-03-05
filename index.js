@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", e => {
     for (i = 0; i < suit.length; i ++) {
       for (j = 0; j < value.length; j ++) {
         if(value[j] === "Ace"){
-          let cardValue = 1
+          let cardValue = 11
             let card = {Value: value[j], Suit: suit[i], CardValue: cardValue}
               deck.push(card)
           //console.log(cardValue);
@@ -62,7 +62,6 @@ document.addEventListener("DOMContentLoaded", e => {
     dealDealerCards(dealerCard1, dealerCard2)
     return deck
     //console.log(deck);
-
   }//end shuffleDeck
   // console.log(shuffleDeck(deck));
   shuffleDeck(deck)
@@ -92,28 +91,43 @@ document.addEventListener("DOMContentLoaded", e => {
     //console.log(hand);
     let totalValue = hand.map(card => {
       return card.CardValue
-
        //console.log(totalValue);
     })
     //console.log(totalValue);
     //return totalValue
     let addedUserCards = totalValue.reduce((num1, num2) => num1 + num2)
+    //console.log(user_hand);
+    checkForAcesUser(hand, addedUserCards)
     //console.log(addedUserCards);
     return addedUserCards
   }
-  // ading the value of the dealers hand
+  // adding the value of the dealers hand
   function valueOfDealerHand(hand){
-    console.log(hand);
+    //console.log(hand);
     let totalValue = hand.map(card => {
       return card.CardValue
        //console.log(totalValue);
     })
     //console.log(totalValue);
-
     let addedDealerCards = totalValue.reduce((num1, num2) => num1 + num2)
     //console.log(addedDealerCards);
     return addedDealerCards
   }
+  function checkForAcesUser(user_hand, sumOfHand){
+    console.log(user_hand, sumOfHand);
+    user_hand.forEach(card => {
+      //console.log(card.Value);
+      if(card.Value.includes("Ace") && sumOfHand > 11){
+          let valueOfAce = 1
+          card.CardValue = valueOfAce
+          console.log(card);
+          let newSumOfHand = sumOfHand - 10
+          console.log(newSumOfHand);
+          //console.log(valueOfAce);
+          //console.log(card);
+         }
+      })
+  }  // end of checkForAcesUser function
 
 
 }) //end of DOMContentLoaded
