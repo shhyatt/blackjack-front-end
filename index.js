@@ -8,6 +8,11 @@ let suit = cards.suit
 let value = cards.value
 
 document.addEventListener("DOMContentLoaded", e => {
+  //console.log(document.body);
+  const body = document.body
+  //console.log(body);
+  const userCards = body.querySelector("#user-cards")
+  //console.log(userCards.innerText);
 
 // creates the deck for the game and sets the value of each card!!!!!
   function createDeck(){
@@ -59,6 +64,7 @@ document.addEventListener("DOMContentLoaded", e => {
     // console.log(deck);
     dealUserCards(userCard1, userCard2)
     //console.log(userCard1);
+    //showUserCards(userCard1, userCard2)
     dealDealerCards(dealerCard1, dealerCard2)
     return deck
     //console.log(deck);
@@ -75,6 +81,7 @@ document.addEventListener("DOMContentLoaded", e => {
     //return user_hand
     valueOfUserHand(user_hand)
     //console.log(user_hand);
+    showUserCards(user_hand)
   }
   //console.log(user_hand)
 
@@ -111,23 +118,77 @@ document.addEventListener("DOMContentLoaded", e => {
     //console.log(totalValue);
     let addedDealerCards = totalValue.reduce((num1, num2) => num1 + num2)
     //console.log(addedDealerCards);
+    checkForAcesDealer(hand, addedDealerCards)
     return addedDealerCards
   }
-  function checkForAcesUser(user_hand, sumOfHand){
-    console.log(user_hand, sumOfHand);
+  function checkForAcesUser(user_hand, sumOfUserHand){
+    //console.log(user_hand, sumOfUserHand);
     user_hand.forEach(card => {
       //console.log(card.Value);
-      if(card.Value.includes("Ace") && sumOfHand > 11){
+      if(card.Value.includes("Ace") && sumOfUserHand > 21){
           let valueOfAce = 1
           card.CardValue = valueOfAce
-          console.log(card);
-          let newSumOfHand = sumOfHand - 10
-          console.log(newSumOfHand);
+          //console.log(card);
+          let newSumOfUserHand = sumOfUserHand - 10
+          //console.log(newSumOfUserHand);
           //console.log(valueOfAce);
           //console.log(card);
          }
       })
   }  // end of checkForAcesUser function
+
+  function checkForAcesDealer(dealer_hand, sumOfDealerHand){
+    //console.log(dealer_hand, sumOfDealerHand);
+    dealer_hand.forEach(card => {
+      //console.log(card.Value);
+      if(card.Value.includes("Ace") && sumOfDealerHand > 21){
+          let valueOfAce = 1
+          card.CardValue = valueOfAce
+          //console.log(card);
+          let newSumOfDealerHand = sumOfDealerHand - 10
+          //console.log(newSumOfDealerHand);
+          //console.log(valueOfAce);
+          //console.log(card);
+         }
+      })
+
+  }// end of checkForAcesDealer
+//event listener
+  function eventListener(){
+    body.addEventListener('click', e => {
+      //console.log(e.target);
+      if(e.target === body.querySelector("#hit-button")){
+        //console.log(e.target);
+        //console.log(deck);
+        let newCard = deck[Math.floor(Math.random()*deck.length)]
+        //console.log(newCard);
+        user_hand.push(newCard)
+        console.log(user_hand);
+        let indexOfNewCard = deck.indexOf(newCard)
+        deck.splice(indexOfNewCard, 1)
+        //console.log(deck);
+        valueOfUserHand(user_hand)
+        showUserCards(user_hand)
+
+      }
+      if(e.target === body.querySelector("#stay-button")){
+        //console.log(e.target);
+      }
+    })
+
+  }
+  eventListener()
+//append the Users Cards to The Page
+  function showUserCards(user_hand){
+    console.log(user_hand);
+    user_hand.forEach(card => {
+      console.log(card);
+      // return userCards.innerText +=  `
+      // ${card.Value} of ${card.Suit}
+      // `
+    })
+
+  }
 
 
 }) //end of DOMContentLoaded
