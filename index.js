@@ -13,6 +13,8 @@ document.addEventListener("DOMContentLoaded", e => {
   //console.log(body);
   const userCards = body.querySelector("#user-cards")
   //console.log(userCards.innerText);
+  const userValue = body.querySelector("#user-card-value")
+  //console.log(userValue);
 
 // creates the deck for the game and sets the value of each card!!!!!
   function createDeck(){
@@ -79,7 +81,7 @@ document.addEventListener("DOMContentLoaded", e => {
     user_hand.push(card1, card2)
     //console.log(user_hand[0].CardValue);
     //return user_hand
-    //valueOfUserHand(user_hand)
+    valueOfUserHand(user_hand)
     //console.log(user_hand);
     //showUserCards(user_hand)
   }
@@ -106,7 +108,7 @@ document.addEventListener("DOMContentLoaded", e => {
     //console.log(user_hand);
     checkForAcesUser(hand, addedUserCards)
     //console.log(addedUserCards);
-    return addedUserCards
+    //return addedUserCards
   }
   // adding the value of the dealers hand
   function valueOfDealerHand(hand){
@@ -131,9 +133,14 @@ document.addEventListener("DOMContentLoaded", e => {
           //console.log(card);
           let newSumOfUserHand = sumOfUserHand - 10
           //console.log(newSumOfUserHand);
+          showUserValue(newSumOfUserHand)
           //console.log(valueOfAce);
           //console.log(card);
-         }
+          //console.log(newSumOfUserHand);
+        } else {
+          showUserValue(sumOfUserHand)
+          //console.log(sumOfUserHand);
+        }
       })
   }  // end of checkForAcesUser function
 
@@ -166,7 +173,7 @@ document.addEventListener("DOMContentLoaded", e => {
         let indexOfNewCard = deck.indexOf(newCard)
         deck.splice(indexOfNewCard, 1)
         //console.log(deck);
-        //valueOfUserHand(user_hand)
+        valueOfUserHand(user_hand)
         //showUserCards(user_hand)
         showNewUserCards(user_hand)
 
@@ -183,7 +190,6 @@ document.addEventListener("DOMContentLoaded", e => {
         showUserCards(user_hand)
       }
     })
-
   }
   eventListener()
 //append the Users Cards to The Page
@@ -195,9 +201,7 @@ document.addEventListener("DOMContentLoaded", e => {
       ${card.Value} of ${card.Suit}
       `
     })
-
   }
-
   function showNewUserCards(hand){
     //console.log(hand);
    userCards.innerText = ''
@@ -207,9 +211,11 @@ document.addEventListener("DOMContentLoaded", e => {
      ${card.Value} of ${card.Suit}
      `
    })
+  }
 
-
-
+  function showUserValue(sum){
+    userValue.innerText = `${sum}`
+    //console.log(sum);
   }
 
 
