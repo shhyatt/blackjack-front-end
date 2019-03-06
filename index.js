@@ -136,10 +136,10 @@ document.addEventListener("DOMContentLoaded", e => {
           showUserValue(newSumOfUserHand)
           //console.log(valueOfAce);
           //console.log(card);
-          //console.log(newSumOfUserHand);
+          console.log(newSumOfUserHand);
         } else {
           showUserValue(sumOfUserHand)
-          //console.log(sumOfUserHand);
+          console.log(sumOfUserHand);
         }
       })
   }  // end of checkForAcesUser function
@@ -173,7 +173,8 @@ document.addEventListener("DOMContentLoaded", e => {
         let indexOfNewCard = deck.indexOf(newCard)
         deck.splice(indexOfNewCard, 1)
         //console.log(deck);
-        valueOfUserHand(user_hand)
+        //valueOfUserHand(user_hand)
+        valueOfNewUserHand(user_hand)
         //showUserCards(user_hand)
         showNewUserCards(user_hand)
 
@@ -214,8 +215,26 @@ document.addEventListener("DOMContentLoaded", e => {
   }
 
   function showUserValue(sum){
+    //console.log(sum);
+    //userValue.innerText = ''
+
     userValue.innerText = `${sum}`
     //console.log(sum);
+  }
+  function valueOfNewUserHand(user_hand){
+    let totalValue = user_hand.map(card => {
+      //console.log(totalValue);
+       //console.log(card.CardValue)
+       return card.CardValue
+
+    })
+    //console.log(totalValue);
+    //return totalValue
+    let addedNewUserCards = totalValue.reduce((num1, num2) => num1 + num2)
+    //console.log(user_hand);
+    checkForAcesUser(user_hand, addedNewUserCards)
+    //console.log(addedNewUserCards);
+
   }
 
 
