@@ -4,17 +4,26 @@ value:["Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "Ki
 let deck = []
 let user_hand = []
 let dealer_hand = []
+let userRecord = []
+let currentScore
 let suit = cards.suit
 let value = cards.value
+const body = document.body
+const userCards = body.querySelector("#user-cards")
+const userValue = body.querySelector("#user-card-value")
 
 document.addEventListener("DOMContentLoaded", e => {
-  //console.log(document.body);
-  const body = document.body
-  //console.log(body);
-  const userCards = body.querySelector("#user-cards")
-  //console.log(userCards.innerText);
-  const userValue = body.querySelector("#user-card-value")
-  //console.log(userValue);
+
+const scoreURL = `http://localhost:3000/api/v1/scores` //LOCAL RAILS SERVER
+////// BEGINNING OF FETCH //////
+fetch(scoreURL)
+.then(res => res.json())
+.then(data => {
+  userRecord = data
+  console.log(userRecord[0].hands_drawn, userRecord[0].hands_lost, userRecord[0].hands_played, userRecord[0].hands_won)
+  // tracker.innerHTML =
+})
+////// END OF FETCH //////
 
 // creates the deck for the game and sets the value of each card!!!!!
   function createDeck(){
@@ -136,10 +145,10 @@ document.addEventListener("DOMContentLoaded", e => {
           showUserValue(newSumOfUserHand)
           //console.log(valueOfAce);
           //console.log(card);
-          //console.log(newSumOfUserHand);
+          console.log(newSumOfUserHand);
         } else {
           showUserValue(sumOfUserHand)
-          //console.log(sumOfUserHand);
+          console.log(sumOfUserHand);
         }
       })
   }  // end of checkForAcesUser function
@@ -173,7 +182,8 @@ document.addEventListener("DOMContentLoaded", e => {
         let indexOfNewCard = deck.indexOf(newCard)
         deck.splice(indexOfNewCard, 1)
         //console.log(deck);
-        valueOfUserHand(user_hand)
+        //valueOfUserHand(user_hand)
+        valueOfNewUserHand(user_hand)
         //showUserCards(user_hand)
         showNewUserCards(user_hand)
 
@@ -214,8 +224,26 @@ document.addEventListener("DOMContentLoaded", e => {
   }
 
   function showUserValue(sum){
+    //console.log(sum);
+    //userValue.innerText = ''
+
     userValue.innerText = `${sum}`
     //console.log(sum);
+  }
+  function valueOfNewUserHand(user_hand){
+    let totalValue = user_hand.map(card => {
+      //console.log(totalValue);
+       //console.log(card.CardValue)
+       return card.CardValue
+
+    })
+    //console.log(totalValue);
+    //return totalValue
+    let addedNewUserCards = totalValue.reduce((num1, num2) => num1 + num2)
+    //console.log(user_hand);
+    checkForAcesUser(user_hand, addedNewUserCards)
+    //console.log(addedNewUserCards);
+
   }
 
 
