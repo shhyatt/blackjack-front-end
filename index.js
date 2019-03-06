@@ -70,7 +70,7 @@ document.addEventListener("DOMContentLoaded", e => {
     //console.log(deck);
   }//end shuffleDeck
   // console.log(shuffleDeck(deck));
-  shuffleDeck(deck)
+  //shuffleDeck(deck)
 
 
  // adding shuffled user cards to our user card array
@@ -79,9 +79,9 @@ document.addEventListener("DOMContentLoaded", e => {
     user_hand.push(card1, card2)
     //console.log(user_hand[0].CardValue);
     //return user_hand
-    valueOfUserHand(user_hand)
+    //valueOfUserHand(user_hand)
     //console.log(user_hand);
-    showUserCards(user_hand)
+    //showUserCards(user_hand)
   }
   //console.log(user_hand)
 
@@ -90,7 +90,7 @@ document.addEventListener("DOMContentLoaded", e => {
     dealer_hand.push(card1, card2)
     //console.log(dealer_hand);
     //return dealer_hand
-    valueOfDealerHand(dealer_hand)
+    //valueOfDealerHand(dealer_hand)
   }
 
   // adding the total value of the Users Hand
@@ -161,18 +161,26 @@ document.addEventListener("DOMContentLoaded", e => {
         //console.log(e.target);
         //console.log(deck);
         let newCard = deck[Math.floor(Math.random()*deck.length)]
-        //console.log(newCard);
+        //console.log(newCard)
         user_hand.push(newCard)
-        console.log(user_hand);
         let indexOfNewCard = deck.indexOf(newCard)
         deck.splice(indexOfNewCard, 1)
         //console.log(deck);
-        valueOfUserHand(user_hand)
-        showUserCards(user_hand)
+        //valueOfUserHand(user_hand)
+        //showUserCards(user_hand)
+        showNewUserCards(user_hand)
+
 
       }
       if(e.target === body.querySelector("#stay-button")){
         //console.log(e.target);
+      }
+      if(e.target === body.querySelector("#deal-button")){
+        shuffleDeck(deck)
+        //console.log(e.target);
+        //console.log(user_hand);
+        //console.log(dealer_hand);
+        showUserCards(user_hand)
       }
     })
 
@@ -180,13 +188,27 @@ document.addEventListener("DOMContentLoaded", e => {
   eventListener()
 //append the Users Cards to The Page
   function showUserCards(user_hand){
-    console.log(user_hand);
+    //console.log(user_hand);
     user_hand.forEach(card => {
-      console.log(card);
-      // return userCards.innerText +=  `
-      // ${card.Value} of ${card.Suit}
-      // `
+      //console.log(card);
+      return userCards.innerText +=  `
+      ${card.Value} of ${card.Suit}
+      `
     })
+
+  }
+
+  function showNewUserCards(hand){
+    //console.log(hand);
+   userCards.innerText = ''
+   hand.forEach(card => {
+     //console.log(card);
+     return userCards.innerText +=  `
+     ${card.Value} of ${card.Suit}
+     `
+   })
+
+
 
   }
 
