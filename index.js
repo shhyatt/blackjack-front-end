@@ -16,18 +16,20 @@ const userCards = body.querySelector("#user-cards")
 const userValue = body.querySelector("#user-card-value")
 const dealerCards = body.querySelector("#dealer-cards")
 const dealerValue = body.querySelector("#dealer-card-value")
+const textUpdates = body.querySelector("#textUpdates")
+//console.log(textUpdates);
 
 document.addEventListener("DOMContentLoaded", e => {
 
 const scoreURL = `http://localhost:3000/api/v1/scores` //LOCAL RAILS SERVER
 ////// BEGINNING OF FETCH //////
-fetch(scoreURL)
-.then(res => res.json())
-.then(data => {
-  userRecord = data
-  console.log(userRecord[0].hands_drawn, userRecord[0].hands_lost, userRecord[0].hands_played, userRecord[0].hands_won)
-  // tracker.innerHTML =
-})
+// fetch(scoreURL)
+// .then(res => res.json())
+// .then(data => {
+//   userRecord = data
+//   console.log(userRecord[0].hands_drawn, userRecord[0].hands_lost, userRecord[0].hands_played, userRecord[0].hands_won)
+//   // tracker.innerHTML =
+// })
 ////// END OF FETCH //////
 
 // creates the deck for the game and sets the value of each card!!!!!
@@ -136,14 +138,17 @@ fetch(scoreURL)
     //console.log(dealer_value);
     if(dealer_value > 21){
     checkForAcesDealer(hand, dealer_value)
-  } else {
+    }
+    //console.log(dealer_value);
+    showDealerValue(dealer_value)
     //dealerHitOrStay(dealer_value)
-  }
+
     //console.log(dealer_value);
     //return addedDealerCards
   }
   function checkForAcesUser(user_hand, sumOfUserHand){
     //console.log(user_hand, sumOfUserHand);
+    let newSumOfUserHand;
     user_hand.forEach(card => {
       //console.log(card.Value);
       if(card.Value.includes("Ace") && sumOfUserHand > 21){
@@ -153,15 +158,17 @@ fetch(scoreURL)
           newSumOfUserHand = sumOfUserHand - 10
           //console.log(newSumOfUserHand);
           //showUserValue(newSumOfUserHand)
-          //console.log(valueOfAce);
+          console.log("Ace Value", valueOfAce);//correct
           //console.log(card);
-          //console.log(newSumOfUserHand);
+          console.log("New Sum", newSumOfUserHand);//right what we want
         } else {
-          newSumOfUserHand = sumOfUserHand
-          //console.log(sumOfUserHand);
+         newSumOfUserHand = sumOfUserHand
+         console.log("After Else SUm", sumOfUserHand);
+         console.log("After Else New Sum", newSumOfUserHand)
         }
       })
-      showUserValue(sumOfUserHand)
+      console.log("Sum of Hand", newSumOfUserHand);
+      showUserValue(newSumOfUserHand)
   }  // end of checkForAcesUser function
 
   function checkForAcesDealer(dealer_hand, sumOfDealerHand){
@@ -279,7 +286,8 @@ fetch(scoreURL)
   }
 
   function showDealerValue(dealer_value){
-    console.log(dealer_value);
+    //console.log(dealer_value);
+      dealerValue.innerText = `${dealer_value}`
   }
   function dealerHitOrStay(dealer_value){
     //console.log(deck);
@@ -301,6 +309,9 @@ fetch(scoreURL)
   }// end of dealerHitOrStay
 
   function compareValues(dealer_value, user_value){
+    if(user_value > dealer_value){
+      textUpdates.innerText = "Player Beats Dealer!"
+    }
 
   }//end of compareValues
 
