@@ -11,17 +11,10 @@ let value = cards.value
 let dealer_value = 0
 let user_value = 0
 
-document.addEventListener("DOMContentLoaded", e => {
-  //console.log(document.body);
-  const body = document.body
-  //console.log(body);
-  const userCards = body.querySelector("#user-cards")
-  //console.log(userCards.innerText);
-  const userValue = body.querySelector("#user-card-value")
-  //console.log(userValue);
-  const dealerCards = body.querySelector("#dealer-cards")
-  //console.log(dealerCards);
-
+const body = document.body
+const userCards = body.querySelector("#user-cards")
+const userValue = body.querySelector("#user-card-value")
+const dealerCards = body.querySelector("#dealer-cards")
 
 document.addEventListener("DOMContentLoaded", e => {
 
@@ -35,7 +28,6 @@ fetch(scoreURL)
   // tracker.innerHTML =
 })
 ////// END OF FETCH //////
-
 
 // creates the deck for the game and sets the value of each card!!!!!
   function createDeck(){
