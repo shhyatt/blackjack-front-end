@@ -141,7 +141,7 @@ const scoreURL = `http://localhost:3000/api/v1/scores` //LOCAL RAILS SERVER
     }
     //console.log(dealer_value);
     showDealerValue(dealer_value)
-    //dealerHitOrStay(dealer_value)
+    //dealerHitOrStay(dealer_value)// will show third dealer card on deal
 
     //console.log(dealer_value);
     //return addedDealerCards
@@ -158,16 +158,16 @@ const scoreURL = `http://localhost:3000/api/v1/scores` //LOCAL RAILS SERVER
           newSumOfUserHand = sumOfUserHand - 10
           //console.log(newSumOfUserHand);
           //showUserValue(newSumOfUserHand)
-          console.log("Ace Value", valueOfAce);//correct
+          //console.log("Ace Value", valueOfAce);//correct
           //console.log(card);
-          console.log("New Sum", newSumOfUserHand);//right what we want
+          //console.log("New Sum", newSumOfUserHand);//right what we want
         } else {
          newSumOfUserHand = sumOfUserHand
-         console.log("After Else SUm", sumOfUserHand);
-         console.log("After Else New Sum", newSumOfUserHand)
+         //console.log("After Else SUm", sumOfUserHand);
+         //console.log("After Else New Sum", newSumOfUserHand)
         }
       })
-      console.log("Sum of Hand", newSumOfUserHand);
+      //console.log("Sum of Hand", newSumOfUserHand);
       showUserValue(newSumOfUserHand)
   }  // end of checkForAcesUser function
 
@@ -182,17 +182,19 @@ const scoreURL = `http://localhost:3000/api/v1/scores` //LOCAL RAILS SERVER
           card.CardValue = valueOfAce
           //console.log(card);
           newSumOfDealerHand = sumOfDealerHand - 10
-          //console.log(newSumOfDealerHand);
-          //console.log(valueOfAce);
+          //console.log(newSumOfDealerHand);//right and what we want
+          //console.log("Value of Ace", valueOfAce);
           //console.log(card);
           //dealerHitOrStay(newSumOfDealerHand)
         } else {
           //dealerHitOrStay(sumOfDealerHand)
-          newSumOfDealerHand = sumOfDealerHand
-          // console.log("else", sumOfDealerHand);
+           sumOfDealerHand
+           //console.log("Reg Sum 192", sumOfDealerHand);
+           //console.log("New Sum 193", newSumOfDealerHand);
         }
       })
       dealerHitOrStay(newSumOfDealerHand)
+      //console.log("outSide Loop New Sum", newSumOfDealerHand);
 
   }// end of checkForAcesDealer
  //event listener
@@ -201,6 +203,10 @@ const scoreURL = `http://localhost:3000/api/v1/scores` //LOCAL RAILS SERVER
       if(e.target === body.querySelector("#hit-button")){
         //console.log(e.target);
         //console.log(deck);
+        if(user_value === 21 && user_value > 21){
+          textUpdates.innerText = "Can't hit!"
+          compareValues(dealer_value, user_value)
+        }
         let newCard = deck[Math.floor(Math.random()*deck.length)]
         //console.log(newCard)
         user_hand.push(newCard)
@@ -214,8 +220,12 @@ const scoreURL = `http://localhost:3000/api/v1/scores` //LOCAL RAILS SERVER
       }
       if(e.target === body.querySelector("#stay-button")){
         //console.log(e.target);
+      //   if(dealer_value < 17){
         dealerHitOrStay(dealer_value)
-        dealerHitOrStay(dealer_value)
+      // } else {
+        //compareValues(dealer_value, user_value)
+      //}
+
       }
       if(e.target === body.querySelector("#deal-button")){
         shuffleDeck(deck)
@@ -288,6 +298,7 @@ const scoreURL = `http://localhost:3000/api/v1/scores` //LOCAL RAILS SERVER
   function showDealerValue(dealer_value){
     //console.log(dealer_value);
       dealerValue.innerText = `${dealer_value}`
+
   }
   function dealerHitOrStay(dealer_value){
     //console.log(deck);
@@ -299,19 +310,75 @@ const scoreURL = `http://localhost:3000/api/v1/scores` //LOCAL RAILS SERVER
       deck.splice(indexOfNewDealerCard, 1)
       //console.log(deck);
       //console.log(newDealerCard);
-      //console.log(dealer_hand);
-      valueOfDealerHand(dealer_hand)
+      console.log("Before the Else", dealer_hand);
+      console.log("Before Else", dealer_value, user_value);
+      valueOfNewDealerHand(dealer_hand)
+      showDealerCards(dealer_hand)
+      //compareValues(dealer_value, user_value)
 
     } else {
-      showDealerCards(dealer_hand)
+      console.log("After Else", dealer_hand);
+      console.log("After Else", dealer_value, user_value);
+      //showDealerCards(dealer_hand)
+      showDealerValue(dealer_value)
       compareValues(dealer_value, user_value)
     }
   }// end of dealerHitOrStay
+  function valueOfNewDealerHand(dealer_hand){
+    let totalValue = dealer_hand.map(card => {
+      return card.CardValue
+       //console.log(totalValue);
+    })
+    //console.log(totalValue);
+    let addedDealerCards = totalValue.reduce((num1, num2) => num1 + num2)
+    //console.log(addedDealerCards);
+    dealer_value = addedDealerCards
+    //console.log(dealer_value);
+    if(dealer_value > 21){
+    checkForAcesDealer(hand, dealer_value)
+  } else {
+    dealerHitOrStay(dealer_value)
+  }
+    //console.log(dealer_value);
+    //showDealerValue(dealer_value)
+    //dealerHitOrStay(dealer_value)// will show third dealer card on deal
+
+    //console.log(dealer_value);
+    //return addedDealerCards
+
+  }
 
   function compareValues(dealer_value, user_value){
-    if(user_value > dealer_value){
+    if(user_value > dealer_value && user_value < 21){
       textUpdates.innerText = "Player Beats Dealer!"
     }
+    if(dealer_value > user_value && dealer_value < 21){
+      textUpdates.innerText = "Dealer Beats Player!!"
+    }
+    if(user_value === dealer_value && user_value < 21 && dealer_value < 21){
+      textUpdates.innerText = "It's a draw. House Wins!"
+    }
+    if(user_value === 21 && dealer_value !== 21){
+      textUpdates.innerText = "Player has BlackJack! Player Wins!"
+    }
+    if(dealer_value === 21){
+      textUpdates.innerText = "Dealer has BlackJack! Dealer Wins!"
+    }
+    if(user_value > 21 && dealer_value < 21){
+      textUpdates.innerText = "Player Busts! Dealer Wins!"
+    }
+    if(dealer_value > 21 && user_value < 21){
+      textUpdates.innerText = "Dealer Busts! User Wins!"
+    }
+    if(dealer_value > 21 && user_value > 21){
+      textUpdates.innerText = "Everyone Busts! No One Wins!"
+    }
+    body.addEventListener("reset", e => {
+      if(e.target === body.querySelector("#deal-button")){
+        console.log(e.target);
+      }
+
+    })
 
   }//end of compareValues
 
