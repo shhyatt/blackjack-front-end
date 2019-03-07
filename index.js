@@ -4,21 +4,26 @@ value:["Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "Ki
 let deck = []
 let user_hand = []
 let dealer_hand = []
+let userRecord = []
+let currentScore
 let suit = cards.suit
 let value = cards.value
-let dealer_value = 0
-let user_value = 0
+const body = document.body
+const userCards = body.querySelector("#user-cards")
+const userValue = body.querySelector("#user-card-value")
 
 document.addEventListener("DOMContentLoaded", e => {
-  //console.log(document.body);
-  const body = document.body
-  //console.log(body);
-  const userCards = body.querySelector("#user-cards")
-  //console.log(userCards.innerText);
-  const userValue = body.querySelector("#user-card-value")
-  //console.log(userValue);
-  const dealerCards = body.querySelector("#dealer-cards")
-  //console.log(dealerCards);
+
+const scoreURL = `http://localhost:3000/api/v1/scores` //LOCAL RAILS SERVER
+////// BEGINNING OF FETCH //////
+fetch(scoreURL)
+.then(res => res.json())
+.then(data => {
+  userRecord = data
+  console.log(userRecord[0].hands_drawn, userRecord[0].hands_lost, userRecord[0].hands_played, userRecord[0].hands_won)
+  // tracker.innerHTML =
+})
+////// END OF FETCH //////
 
 // creates the deck for the game and sets the value of each card!!!!!
   function createDeck(){
