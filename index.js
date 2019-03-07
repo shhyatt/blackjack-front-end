@@ -8,6 +8,9 @@ let userRecord = []
 let currentScore
 let suit = cards.suit
 let value = cards.value
+let user_value = 0
+let dealer_value = 0
+
 const body = document.body
 const userCards = body.querySelector("#user-cards")
 const userValue = body.querySelector("#user-card-value")
@@ -131,7 +134,12 @@ fetch(scoreURL)
     //console.log(addedDealerCards);
     dealer_value = addedDealerCards
     //console.log(dealer_value);
-    checkForAcesDealer(hand, addedDealerCards)
+    if(dealer_value > 21){
+    checkForAcesDealer(hand, dealer_value)
+  } else {
+    //dealerHitOrStay(dealer_value)
+  }
+    //console.log(dealer_value);
     //return addedDealerCards
   }
   function checkForAcesUser(user_hand, sumOfUserHand){
@@ -162,7 +170,7 @@ fetch(scoreURL)
     dealer_hand.forEach(card => {
       // console.log(sumOfDealerHand);
       if(card.Value.includes("Ace") && sumOfDealerHand > 21){
-        console.log("first log", sumOfDealerHand);
+        //console.log("first log", sumOfDealerHand);
           let valueOfAce = 1
           card.CardValue = valueOfAce
           //console.log(card);
@@ -176,7 +184,6 @@ fetch(scoreURL)
           newSumOfDealerHand = sumOfDealerHand
           // console.log("else", sumOfDealerHand);
         }
-
       })
       dealerHitOrStay(newSumOfDealerHand)
 
@@ -200,8 +207,8 @@ fetch(scoreURL)
       }
       if(e.target === body.querySelector("#stay-button")){
         //console.log(e.target);
-        //dealerHitOrStay(sum)
-        valueOfDealerHand(dealer_hand)
+        dealerHitOrStay(dealer_value)
+        dealerHitOrStay(dealer_value)
       }
       if(e.target === body.querySelector("#deal-button")){
         shuffleDeck(deck)
@@ -238,7 +245,6 @@ fetch(scoreURL)
   function showUserValue(sum){
     //console.log(sum);
     //userValue.innerText = ''
-
     userValue.innerText = `${sum}`
     //console.log(sum);
   }
@@ -253,16 +259,17 @@ fetch(scoreURL)
     //return totalValue
     let addedNewUserCards = totalValue.reduce((num1, num2) => num1 + num2)
     //console.log(user_hand);
-    checkForAcesUser(user_hand, addedNewUserCards)
-    console.log(addedNewUserCards);
-    console.log(user_value);
+    //console.log(addedNewUserCards);
+    //console.log(user_value);
     user_value = addedNewUserCards
-    console.log(addedNewUserCards);
-    console.log(user_value);
+    checkForAcesUser(user_hand, user_value)
+    //console.log(addedNewUserCards);
+    //console.log(user_value);
 
   }
   function showDealerCards(dealer_hand){
     //console.log(dealer_hand);
+    dealerCards.innerText = ''
     dealer_hand.forEach(card => {
       //console.log(card);
       return dealerCards.innerText +=  `
@@ -271,13 +278,13 @@ fetch(scoreURL)
     })
   }
 
-  //function showDealerValue(sum){
-    //console.log(sum);
-  //}
-  function dealerHitOrStay(dealer_sum){
+  function showDealerValue(dealer_value){
+    console.log(dealer_value);
+  }
+  function dealerHitOrStay(dealer_value){
     //console.log(deck);
-    //console.log(sum);
-    if(dealer_sum < 17){
+    //console.log(dealer_value);
+    if(dealer_value < 17){
       let newDealerCard = deck[Math.floor(Math.random()*deck.length)]
       dealer_hand.push(newDealerCard)
       let indexOfNewDealerCard = deck.indexOf(newDealerCard)
@@ -288,9 +295,13 @@ fetch(scoreURL)
       valueOfDealerHand(dealer_hand)
 
     } else {
-      //evalDealerSum(dealer_sum)
+      showDealerCards(dealer_hand)
+      compareValues(dealer_value, user_value)
     }
+  }// end of dealerHitOrStay
 
-  }
+  function compareValues(dealer_value, user_value){
+
+  }//end of compareValues
 
 }) //end of DOMContentLoaded
