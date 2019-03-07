@@ -11,6 +11,8 @@ let value = cards.value
 const body = document.body
 const userCards = body.querySelector("#user-cards")
 const userValue = body.querySelector("#user-card-value")
+const dealerCards = body.querySelector("#dealer-cards")
+const dealerValue = body.querySelector("#dealer-card-value")
 
 document.addEventListener("DOMContentLoaded", e => {
 
@@ -82,8 +84,6 @@ fetch(scoreURL)
   }//end shuffleDeck
   // console.log(shuffleDeck(deck));
   //shuffleDeck(deck)
-
-
  // adding shuffled user cards to our user card array
   function dealUserCards(card1, card2){
     //console.log(card1);
@@ -95,15 +95,13 @@ fetch(scoreURL)
     //showUserCards(user_hand)
   }
   //console.log(user_hand)
-
   // adding the shuffled cards to our dealer card array
   function dealDealerCards(card1, card2){
     dealer_hand.push(card1, card2)
     //console.log(dealer_hand);
     //return dealer_hand
-    //valueOfDealerHand(dealer_hand)
+    valueOfDealerHand(dealer_hand)
   }
-
   // adding the total value of the Users Hand
   function valueOfUserHand(hand){
     //console.log(hand);
@@ -115,7 +113,9 @@ fetch(scoreURL)
     //return totalValue
     let addedUserCards = totalValue.reduce((num1, num2) => num1 + num2)
     //console.log(user_hand);
-    checkForAcesUser(hand, addedUserCards)
+    user_value = addedUserCards
+    //console.log(user_value);
+    checkForAcesUser(hand, user_value)
     //console.log(addedUserCards);
     //return addedUserCards
   }
@@ -129,8 +129,10 @@ fetch(scoreURL)
     //console.log(totalValue);
     let addedDealerCards = totalValue.reduce((num1, num2) => num1 + num2)
     //console.log(addedDealerCards);
+    dealer_value = addedDealerCards
+    //console.log(dealer_value);
     checkForAcesDealer(hand, addedDealerCards)
-    return addedDealerCards
+    //return addedDealerCards
   }
   function checkForAcesUser(user_hand, sumOfUserHand){
     //console.log(user_hand, sumOfUserHand);
@@ -140,39 +142,48 @@ fetch(scoreURL)
           let valueOfAce = 1
           card.CardValue = valueOfAce
           //console.log(card);
-          let newSumOfUserHand = sumOfUserHand - 10
+          newSumOfUserHand = sumOfUserHand - 10
           //console.log(newSumOfUserHand);
-          showUserValue(newSumOfUserHand)
+          //showUserValue(newSumOfUserHand)
           //console.log(valueOfAce);
           //console.log(card);
-          console.log(newSumOfUserHand);
+          //console.log(newSumOfUserHand);
         } else {
-          showUserValue(sumOfUserHand)
-          console.log(sumOfUserHand);
+          newSumOfUserHand = sumOfUserHand
+          //console.log(sumOfUserHand);
         }
       })
+      showUserValue(sumOfUserHand)
   }  // end of checkForAcesUser function
 
   function checkForAcesDealer(dealer_hand, sumOfDealerHand){
     //console.log(dealer_hand, sumOfDealerHand);
+    let newSumOfDealerHand;
     dealer_hand.forEach(card => {
-      //console.log(card.Value);
+      // console.log(sumOfDealerHand);
       if(card.Value.includes("Ace") && sumOfDealerHand > 21){
+        console.log("first log", sumOfDealerHand);
           let valueOfAce = 1
           card.CardValue = valueOfAce
           //console.log(card);
-          let newSumOfDealerHand = sumOfDealerHand - 10
+          newSumOfDealerHand = sumOfDealerHand - 10
           //console.log(newSumOfDealerHand);
           //console.log(valueOfAce);
           //console.log(card);
-         }
+          //dealerHitOrStay(newSumOfDealerHand)
+        } else {
+          //dealerHitOrStay(sumOfDealerHand)
+          newSumOfDealerHand = sumOfDealerHand
+          // console.log("else", sumOfDealerHand);
+        }
+
       })
+      dealerHitOrStay(newSumOfDealerHand)
 
   }// end of checkForAcesDealer
-//event listener
+ //event listener
   function eventListener(){
     body.addEventListener('click', e => {
-      //console.log(e.target);
       if(e.target === body.querySelector("#hit-button")){
         //console.log(e.target);
         //console.log(deck);
@@ -186,11 +197,11 @@ fetch(scoreURL)
         valueOfNewUserHand(user_hand)
         //showUserCards(user_hand)
         showNewUserCards(user_hand)
-
-
       }
       if(e.target === body.querySelector("#stay-button")){
         //console.log(e.target);
+        //dealerHitOrStay(sum)
+        valueOfDealerHand(dealer_hand)
       }
       if(e.target === body.querySelector("#deal-button")){
         shuffleDeck(deck)
@@ -198,11 +209,12 @@ fetch(scoreURL)
         //console.log(user_hand);
         //console.log(dealer_hand);
         showUserCards(user_hand)
+        showDealerCards(dealer_hand)
       }
     })
   }
   eventListener()
-//append the Users Cards to The Page
+ //append the Users Cards to The Page
   function showUserCards(user_hand){
     //console.log(user_hand);
     user_hand.forEach(card => {
@@ -242,9 +254,43 @@ fetch(scoreURL)
     let addedNewUserCards = totalValue.reduce((num1, num2) => num1 + num2)
     //console.log(user_hand);
     checkForAcesUser(user_hand, addedNewUserCards)
-    //console.log(addedNewUserCards);
+    console.log(addedNewUserCards);
+    console.log(user_value);
+    user_value = addedNewUserCards
+    console.log(addedNewUserCards);
+    console.log(user_value);
 
   }
+  function showDealerCards(dealer_hand){
+    //console.log(dealer_hand);
+    dealer_hand.forEach(card => {
+      //console.log(card);
+      return dealerCards.innerText +=  `
+      ${card.Value} of ${card.Suit}
+      `
+    })
+  }
 
+  //function showDealerValue(sum){
+    //console.log(sum);
+  //}
+  function dealerHitOrStay(dealer_sum){
+    //console.log(deck);
+    //console.log(sum);
+    if(dealer_sum < 17){
+      let newDealerCard = deck[Math.floor(Math.random()*deck.length)]
+      dealer_hand.push(newDealerCard)
+      let indexOfNewDealerCard = deck.indexOf(newDealerCard)
+      deck.splice(indexOfNewDealerCard, 1)
+      //console.log(deck);
+      //console.log(newDealerCard);
+      //console.log(dealer_hand);
+      valueOfDealerHand(dealer_hand)
+
+    } else {
+      //evalDealerSum(dealer_sum)
+    }
+
+  }
 
 }) //end of DOMContentLoaded
