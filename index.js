@@ -6,6 +6,8 @@ let user_hand = []
 let dealer_hand = []
 let suit = cards.suit
 let value = cards.value
+let dealer_value = 0
+let user_value = 0
 
 document.addEventListener("DOMContentLoaded", e => {
   //console.log(document.body);
@@ -86,7 +88,6 @@ document.addEventListener("DOMContentLoaded", e => {
     //showUserCards(user_hand)
   }
   //console.log(user_hand)
-
   // adding the shuffled cards to our dealer card array
   function dealDealerCards(card1, card2){
     dealer_hand.push(card1, card2)
@@ -94,7 +95,6 @@ document.addEventListener("DOMContentLoaded", e => {
     //return dealer_hand
     valueOfDealerHand(dealer_hand)
   }
-
   // adding the total value of the Users Hand
   function valueOfUserHand(hand){
     //console.log(hand);
@@ -106,7 +106,9 @@ document.addEventListener("DOMContentLoaded", e => {
     //return totalValue
     let addedUserCards = totalValue.reduce((num1, num2) => num1 + num2)
     //console.log(user_hand);
-    checkForAcesUser(hand, addedUserCards)
+    user_value = addedUserCards
+    //console.log(user_value);
+    checkForAcesUser(hand, user_value)
     //console.log(addedUserCards);
     //return addedUserCards
   }
@@ -120,6 +122,8 @@ document.addEventListener("DOMContentLoaded", e => {
     //console.log(totalValue);
     let addedDealerCards = totalValue.reduce((num1, num2) => num1 + num2)
     //console.log(addedDealerCards);
+    dealer_value = addedDealerCards
+    //console.log(dealer_value);
     checkForAcesDealer(hand, addedDealerCards)
     //return addedDealerCards
   }
@@ -131,24 +135,24 @@ document.addEventListener("DOMContentLoaded", e => {
           let valueOfAce = 1
           card.CardValue = valueOfAce
           //console.log(card);
-          let newSumOfUserHand = sumOfUserHand - 10
+          newSumOfUserHand = sumOfUserHand - 10
           //console.log(newSumOfUserHand);
-          showUserValue(newSumOfUserHand)
+          //showUserValue(newSumOfUserHand)
           //console.log(valueOfAce);
           //console.log(card);
           //console.log(newSumOfUserHand);
         } else {
-          showUserValue(sumOfUserHand)
+          newSumOfUserHand = sumOfUserHand
           //console.log(sumOfUserHand);
         }
       })
+      showUserValue(sumOfUserHand)
   }  // end of checkForAcesUser function
 
   function checkForAcesDealer(dealer_hand, sumOfDealerHand){
     //console.log(dealer_hand, sumOfDealerHand);
     let newSumOfDealerHand;
     dealer_hand.forEach(card => {
-
       // console.log(sumOfDealerHand);
       if(card.Value.includes("Ace") && sumOfDealerHand > 21){
         console.log("first log", sumOfDealerHand);
@@ -169,9 +173,8 @@ document.addEventListener("DOMContentLoaded", e => {
       })
       dealerHitOrStay(newSumOfDealerHand)
 
-
   }// end of checkForAcesDealer
-//event listener
+ //event listener
   function eventListener(){
     body.addEventListener('click', e => {
       if(e.target === body.querySelector("#hit-button")){
@@ -187,13 +190,11 @@ document.addEventListener("DOMContentLoaded", e => {
         valueOfNewUserHand(user_hand)
         //showUserCards(user_hand)
         showNewUserCards(user_hand)
-
-
       }
       if(e.target === body.querySelector("#stay-button")){
         //console.log(e.target);
         //dealerHitOrStay(sum)
-        //valueOfDealerHand(dealer_hand)
+        valueOfDealerHand(dealer_hand)
       }
       if(e.target === body.querySelector("#deal-button")){
         shuffleDeck(deck)
@@ -206,7 +207,7 @@ document.addEventListener("DOMContentLoaded", e => {
     })
   }
   eventListener()
-//append the Users Cards to The Page
+ //append the Users Cards to The Page
   function showUserCards(user_hand){
     //console.log(user_hand);
     user_hand.forEach(card => {
@@ -246,7 +247,11 @@ document.addEventListener("DOMContentLoaded", e => {
     let addedNewUserCards = totalValue.reduce((num1, num2) => num1 + num2)
     //console.log(user_hand);
     checkForAcesUser(user_hand, addedNewUserCards)
-    //console.log(addedNewUserCards);
+    console.log(addedNewUserCards);
+    console.log(user_value);
+    user_value = addedNewUserCards
+    console.log(addedNewUserCards);
+    console.log(user_value);
 
   }
   function showDealerCards(dealer_hand){
@@ -262,15 +267,22 @@ document.addEventListener("DOMContentLoaded", e => {
   //function showDealerValue(sum){
     //console.log(sum);
   //}
-  function dealerHitOrStay(sum){
-    console.log(sum);
-    // if(sum < 17){
-    //   let newDealerCard = deck[Math.floor(Math.random()*deck.length)]
-    //   let indexOfNewDealerCard = deck.indexOf(newDealerCard)
-    //   deck.splice(indexOfNewDealerCard, 1)
-    //   console.log(newDealerCard);
-    //   //console.log(deck);
-    // }
+  function dealerHitOrStay(dealer_sum){
+    //console.log(deck);
+    //console.log(sum);
+    if(dealer_sum < 17){
+      let newDealerCard = deck[Math.floor(Math.random()*deck.length)]
+      dealer_hand.push(newDealerCard)
+      let indexOfNewDealerCard = deck.indexOf(newDealerCard)
+      deck.splice(indexOfNewDealerCard, 1)
+      //console.log(deck);
+      //console.log(newDealerCard);
+      //console.log(dealer_hand);
+      valueOfDealerHand(dealer_hand)
+
+    } else {
+      //evalDealerSum(dealer_sum)
+    }
 
   }
 
