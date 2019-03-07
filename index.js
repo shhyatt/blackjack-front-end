@@ -11,6 +11,8 @@ let value = cards.value
 const body = document.body
 const userCards = body.querySelector("#user-cards")
 const userValue = body.querySelector("#user-card-value")
+const dealerCards = body.querySelector("#dealer-cards")
+const dealerValue = body.querySelector("#dealer-card-value")
 
 document.addEventListener("DOMContentLoaded", e => {
 
