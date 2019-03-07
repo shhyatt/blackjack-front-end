@@ -4,6 +4,8 @@ value:["Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "Ki
 let deck = []
 let user_hand = []
 let dealer_hand = []
+let userRecord = []
+let currentScore
 let suit = cards.suit
 let value = cards.value
 let dealer_value = 0
@@ -19,6 +21,21 @@ document.addEventListener("DOMContentLoaded", e => {
   //console.log(userValue);
   const dealerCards = body.querySelector("#dealer-cards")
   //console.log(dealerCards);
+
+
+document.addEventListener("DOMContentLoaded", e => {
+
+const scoreURL = `http://localhost:3000/api/v1/scores` //LOCAL RAILS SERVER
+////// BEGINNING OF FETCH //////
+fetch(scoreURL)
+.then(res => res.json())
+.then(data => {
+  userRecord = data
+  console.log(userRecord[0].hands_drawn, userRecord[0].hands_lost, userRecord[0].hands_played, userRecord[0].hands_won)
+  // tracker.innerHTML =
+})
+////// END OF FETCH //////
+
 
 // creates the deck for the game and sets the value of each card!!!!!
   function createDeck(){
@@ -231,7 +248,6 @@ document.addEventListener("DOMContentLoaded", e => {
   function showUserValue(sum){
     //console.log(sum);
     //userValue.innerText = ''
-
     userValue.innerText = `${sum}`
     //console.log(sum);
   }
@@ -252,7 +268,6 @@ document.addEventListener("DOMContentLoaded", e => {
     user_value = addedNewUserCards
     console.log(addedNewUserCards);
     console.log(user_value);
-
   }
   function showDealerCards(dealer_hand){
     //console.log(dealer_hand);
@@ -263,7 +278,6 @@ document.addEventListener("DOMContentLoaded", e => {
       `
     })
   }
-
   //function showDealerValue(sum){
     //console.log(sum);
   //}
@@ -279,11 +293,8 @@ document.addEventListener("DOMContentLoaded", e => {
       //console.log(newDealerCard);
       //console.log(dealer_hand);
       valueOfDealerHand(dealer_hand)
-
     } else {
       //evalDealerSum(dealer_sum)
     }
-
   }
-
 }) //end of DOMContentLoaded
