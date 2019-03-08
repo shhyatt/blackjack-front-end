@@ -406,7 +406,6 @@ fetch(scoreURL)
           hands_won: newWins
         })
       }) //end of fetch
-
     }
     if(dealer_value > user_value && dealer_value < 21){
       textUpdates.innerText = "Dealer Beats Player!! Press Deal To Play Again!"
@@ -519,9 +518,7 @@ fetch(scoreURL)
     }
     if(dealer_value > 21 && user_value > 21){
       textUpdates.innerText = "Everyone Busts! No One Wins! Press Deal To Play Again!"
-
     }
-
   }//end of compareValues
 
   function newGame(){
