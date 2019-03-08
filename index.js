@@ -12,10 +12,10 @@ let gamesPlayed = body.querySelector("#games-played")
 let gamesWon = body.querySelector("#games-won")
 let gamesLost = body.querySelector("#games-lost")
 let gamesDrawn = body.querySelector("#games-drawn")
-let currentRecord  //hands_played
-let currentWins  //hands_won
-let currentLosses //hands_lost
-let currentDraws //hands_drawn
+let games = 0
+let wins = 0
+let losses = 0
+let draws = 0
 const userCards = body.querySelector("#user-cards")
 const userValue = body.querySelector("#user-card-value")
 const dealerCards = body.querySelector("#dealer-cards")
@@ -24,6 +24,7 @@ const dealerValue = body.querySelector("#dealer-card-value")
 document.addEventListener("DOMContentLoaded", e => {
 
 const scoreURL = `http://localhost:3000/api/v1/scores` //LOCAL RAILS SERVER
+
 ////// BEGINNING OF FETCH TO GET PLAYER RECORD FROM SERVER//////
 fetch(scoreURL)
 .then(res => res.json())
@@ -33,20 +34,20 @@ fetch(scoreURL)
   gamesWon.innerHTML = `${userRecord[0].hands_won}`
   gamesLost.innerHTML = `${userRecord[0].hands_lost}`
   gamesDrawn.innerHTML = `${userRecord[0].hands_drawn}`
-})
+}) //end of GET fetch
 
-// fetch(scoreURL, {
+// fetch(`http://localhost:3000/api/v1/scores/1`, {
 //   method: "PATCH",
 //   headers: {
 //     "Content-Type": "application/json",
 //     "Accept": "application/json"
 //   },
-//   body: JSON.stringify(){
-//     hands_played: gamesRecord,
-//     hands_won: winsRecord,
-//     hands_lost: lossesRecord,
-//     hands_drawn: drawsRecord
-//   }
+//   body: JSON.stringify({
+//     hands_played: games,
+//     hands_won: wins,
+//     hands_lost: losses,
+//     hands_drawn: draws
+//   })
 // }) //end of fetch
 
 // creates the deck for the game and sets the value of each card!!!!!
@@ -390,37 +391,131 @@ fetch(scoreURL)
   function compareValues(dealer_value, user_value){
     if(user_value > dealer_value && user_value < 21){
       textUpdates.innerText = "Player Beats Dealer! Press Deal To Play Again!"
+      games = parseInt(gamesPlayed.innerHTML)
+      wins = parseInt(gamesWon.innerHTML)
+      let newGames = games + 1
+      let newWins = wins + 1
+      fetch(`http://localhost:3000/api/v1/scores/1`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify({
+          hands_played: newGames,
+          hands_won: newWins
+        })
+      }) //end of fetch
 
     }
     if(dealer_value > user_value && dealer_value < 21){
       textUpdates.innerText = "Dealer Beats Player!! Press Deal To Play Again!"
-
+      games = parseInt(gamesPlayed.innerHTML)
+      losses = parseInt(gamesLost.innerHTML)
+      let newGames = games + 1
+      let newLosses = losses + 1
+      fetch(`http://localhost:3000/api/v1/scores/1`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify({
+          hands_played: newGames,
+          hands_lost: newLosses
+        })
+      }) //end of fetch
 
     }
     if(user_value === dealer_value && user_value < 21 && dealer_value < 21){
       textUpdates.innerText = "It's a draw! Press Deal To Play Again!"
-
-
+      games = parseInt(gamesPlayed.innerHTML)
+      draws = parseInt(gamesDrawn.innerHTML)
+      let newGames = games + 1
+      let newDraws = draws + 1
+      fetch(`http://localhost:3000/api/v1/scores/1`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify({
+          hands_played: newGames,
+          hands_drawn: newDraws
+        })
+      })
     }
     if(user_value === 21 && dealer_value !== 21){
       textUpdates.innerText = "Player has BlackJack! Player Wins! Press Deal To Play Again!"
-
-
+      games = parseInt(gamesPlayed.innerHTML)
+      wins = parseInt(gamesWon.innerHTML)
+      let newGames = games + 1
+      let newWins = wins + 1
+      fetch(`http://localhost:3000/api/v1/scores/1`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify({
+          hands_played: newGames,
+          hands_won: newWins
+        })
+      })
     }
     if(dealer_value === 21){
       textUpdates.innerText = "Dealer has BlackJack! Dealer Wins! Press Deal To Play Again!"
-
-
+      games = parseInt(gamesPlayed.innerHTML)
+      losses = parseInt(gamesLost.innerHTML)
+      let newGames = games + 1
+      let newLosses = losses + 1
+      fetch(`http://localhost:3000/api/v1/scores/1`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify({
+          hands_played: newGames,
+          hands_lost: newLosses
+        })
+      })
     }
     if(user_value > 21 && dealer_value < 21){
       textUpdates.innerText = "Player Busts! Dealer Wins! Press Deal To Play Again!"
-
-
+      games = parseInt(gamesPlayed.innerHTML)
+      losses = parseInt(gamesLost.innerHTML)
+      let newGames = games + 1
+      let newLosses = losses + 1
+      fetch(`http://localhost:3000/api/v1/scores/1`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify({
+          hands_played: newGames,
+          hands_lost: newLosses
+        })
+      })
     }
     if(dealer_value > 21 && user_value < 21){
       textUpdates.innerText = "Dealer Busts! User Wins! Press Deal To Play Again!"
-
-
+      games = parseInt(gamesPlayed.innerHTML)
+      wins = parseInt(gamesWon.innerHTML)
+      let newGames = games + 1
+      let newWins = wins + 1
+      fetch(`http://localhost:3000/api/v1/scores/1`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify({
+          hands_played: newGames,
+          hands_won: newWins
+        })
+      })
     }
     if(dealer_value > 21 && user_value > 21){
       textUpdates.innerText = "Everyone Busts! No One Wins! Press Deal To Play Again!"
