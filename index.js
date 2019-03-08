@@ -226,7 +226,7 @@ fetch(scoreURL)
         //   textUpdates.innerText = "Can't hit!"
         //   compareValues(dealer_value, user_value)
         // }
-        console.log(user_value);
+        //console.log(user_value);
 
         //console.log(deck);
         //valueOfUserHand(user_hand)
@@ -257,9 +257,9 @@ fetch(scoreURL)
   }
   function hitFunction(user_value){
     if(user_value > 21){
-    textUpdates.innerHTML = "Player Busts! Dealer Wins!"
+    textUpdates.innerHTML = "Player Busts! Dealer Wins! Press Deal To Play Again"
   } else {
-    textUpdates.innerHTML = "Player has BlackJack! PlayerWins"
+    textUpdates.innerHTML = "Player has BlackJack! Player Wins! Press Deal To Play Again"
   }
   }
   eventListener()
@@ -269,6 +269,7 @@ fetch(scoreURL)
     user_hand.forEach(card => {
       //console.log(card);
       return userCards.innerHTML +=  `
+
       <p>${card.Value} of ${card.Suit}</p>
       `
     })
