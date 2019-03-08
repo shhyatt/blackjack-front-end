@@ -17,6 +17,7 @@ const userValue = body.querySelector("#user-card-value")
 const dealerCards = body.querySelector("#dealer-cards")
 const dealerValue = body.querySelector("#dealer-card-value")
 const textUpdates = body.querySelector("#textUpdates")
+
 //console.log(textUpdates);
 
 document.addEventListener("DOMContentLoaded", e => {
@@ -58,9 +59,9 @@ const scoreURL = `http://localhost:3000/api/v1/scores` //LOCAL RAILS SERVER
       }
     }
     //console.log(deck);
-    return deck
+    //return deck
   }//end of createDeck
-  createDeck()
+
   //console.log(deck);
   function shuffleDeck(deck){
     let userCard1 = deck[Math.floor(Math.random()*deck.length)]
@@ -182,17 +183,18 @@ const scoreURL = `http://localhost:3000/api/v1/scores` //LOCAL RAILS SERVER
           card.CardValue = valueOfAce
           //console.log(card);
           newSumOfDealerHand = sumOfDealerHand - 10
-          //console.log(newSumOfDealerHand);//right and what we want
+          //console.log("newSum 186", newSumOfDealerHand);//right and what we want
           //console.log("Value of Ace", valueOfAce);
           //console.log(card);
           //dealerHitOrStay(newSumOfDealerHand)
         } else {
           //dealerHitOrStay(sumOfDealerHand)
-           sumOfDealerHand
+           newSumOfDealerHand = sumOfDealerHand
            //console.log("Reg Sum 192", sumOfDealerHand);
            //console.log("New Sum 193", newSumOfDealerHand);
         }
       })
+      //console.log("outside of Loop", sumOfDealerHand);
       dealerHitOrStay(newSumOfDealerHand)
       //console.log("outSide Loop New Sum", newSumOfDealerHand);
 
@@ -203,38 +205,29 @@ const scoreURL = `http://localhost:3000/api/v1/scores` //LOCAL RAILS SERVER
       if(e.target === body.querySelector("#hit-button")){
         //console.log(e.target);
         //console.log(deck);
-        if(user_value === 21 && user_value > 21){
-          textUpdates.innerText = "Can't hit!"
-          compareValues(dealer_value, user_value)
-        }
         let newCard = deck[Math.floor(Math.random()*deck.length)]
         //console.log(newCard)
         user_hand.push(newCard)
         let indexOfNewCard = deck.indexOf(newCard)
         deck.splice(indexOfNewCard, 1)
+        if(user_value > 21){
+          console.log(user_value);
+          textUpdates.innerText = "Can't hit!"
+          compareValues(dealer_value, user_value)
+        }
+        console.log(user_value);
+
         //console.log(deck);
         //valueOfUserHand(user_hand)
         valueOfNewUserHand(user_hand)
         //showUserCards(user_hand)
         showNewUserCards(user_hand)
       }
-      if(e.target === body.querySelector("#stay-button")){
-        //console.log(e.target);
-      //   if(dealer_value < 17){
-        dealerHitOrStay(dealer_value)
-      // } else {
-        //compareValues(dealer_value, user_value)
-      //}
 
+      if(e.target === body.querySelector("#stay-button")){
+        dealerHitOrStay(dealer_value)
       }
-      if(e.target === body.querySelector("#deal-button")){
-        shuffleDeck(deck)
-        //console.log(e.target);
-        //console.log(user_hand);
-        //console.log(dealer_hand);
-        showUserCards(user_hand)
-        showDealerCards(dealer_hand)
-      }
+
     })
   }
   eventListener()
@@ -337,6 +330,7 @@ const scoreURL = `http://localhost:3000/api/v1/scores` //LOCAL RAILS SERVER
     dealer_value = addedDealerCards
     //console.log(dealer_value);
     if(dealer_value > 21){
+      //console.log(dealer_value);
     checkForAcesDealer(dealer_hand, dealer_value)
   } else {
     dealerHitOrStay(dealer_value)
@@ -349,61 +343,60 @@ const scoreURL = `http://localhost:3000/api/v1/scores` //LOCAL RAILS SERVER
   }
   function compareValues(dealer_value, user_value){
     if(user_value > dealer_value && user_value < 21){
-      textUpdates.innerText = "Player Beats Dealer!"
-      reset()
+      textUpdates.innerText = "Player Beats Dealer! Press Deal To Play Again!"
     }
     if(dealer_value > user_value && dealer_value < 21){
-      textUpdates.innerText = "Dealer Beats Player!!"
-      reset()
+      textUpdates.innerText = "Dealer Beats Player!! Press Deal To Play Again!"
     }
     if(user_value === dealer_value && user_value < 21 && dealer_value < 21){
-      textUpdates.innerText = "It's a draw. House Wins!"
-      reset()
+      textUpdates.innerText = "It's a draw. House Wins! Press Deal To Play Again!"
     }
     if(user_value === 21 && dealer_value !== 21){
-      textUpdates.innerText = "Player has BlackJack! Player Wins!"
-      reset()
+      textUpdates.innerText = "Player has BlackJack! Player Wins! Press Deal To Play Again!"
     }
     if(dealer_value === 21){
-      textUpdates.innerText = "Dealer has BlackJack! Dealer Wins!"
-        reset()
+      textUpdates.innerText = "Dealer has BlackJack! Dealer Wins! Press Deal To Play Again!"
     }
     if(user_value > 21 && dealer_value < 21){
-      textUpdates.innerText = "Player Busts! Dealer Wins!"
-      reset()
+      textUpdates.innerText = "Player Busts! Dealer Wins! Press Deal To Play Again!"
     }
     if(dealer_value > 21 && user_value < 21){
-      textUpdates.innerText = "Dealer Busts! User Wins!"
-       reset()
+      textUpdates.innerText = "Dealer Busts! User Wins! Press Deal To Play Again!"
     }
     if(dealer_value > 21 && user_value > 21){
-      textUpdates.innerText = "Everyone Busts! No One Wins!"
-       reset()
+      textUpdates.innerText = "Everyone Busts! No One Wins! Press Deal To Play Again!"
     }
 
   }//end of compareValues
-  function reset(){
-  body.addEventListener("click", e => {
-    if(e.target === body.querySelector("#deal-button"))
-      userCards.innerHTML = ''
-      userValue.innerHTML = ''
-      dealerCards.innerHTML = ''
-      dealerValue.innerHTML = ''
-      textUpdates.innerText = ''
-      //console.log(e.target);
 
-     createDeck()
-     console.log(deck);
-     dealer_hand = []
-     user_hand = []
-     console.log(user_hand);
-     console.log(dealer_hand);
-     user_value = 0
-     dealer_value = 0
-     shuffleDeck(deck)
+  function newGame(){
+    body.addEventListener("click", e => {
+      if(e.target === body.querySelector("#deal-button")){
+        userCards.innerHTML = ''
+        userValue.innerHTML = ''
+        dealerCards.innerHTML = ''
+        dealerValue.innerHTML = ''
+        textUpdates.innerText = ''
+        createDeck()
+        //console.log(deck);
+        dealer_hand = []
+        user_hand = []
+        //console.log(user_hand);
+        //console.log(dealer_hand);
+        user_value = 0
+        //console.log(user_value);
+        dealer_value = 0
+        //console.log(dealer_value);
+        shuffleDeck(deck)
+        showUserCards(user_hand)
+        showDealerCards(dealer_hand)
+        if(user_value === 21){
+          textUpdates.innerHTML = "Player has BlackJack! Player Wins! Press Deal To Play Again!"
+        } else {
+        textUpdates.innerText = 'Press Hit Or Stay!'
+      }
+      }
     })
   }
-
-
-
+  newGame()
 }) //end of DOMContentLoaded
