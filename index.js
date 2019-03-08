@@ -207,12 +207,20 @@ fetch(scoreURL)
       if(e.target === body.querySelector("#hit-button")){
         //console.log(e.target);
         //console.log(deck);
+        console.log("before new card", user_value);
         let newCard = deck[Math.floor(Math.random()*deck.length)]
         //console.log(newCard)
+        console.log("after new Card", user_value);
         user_hand.push(newCard)
+        //console.log(user_hand); new card is in hand here! now evaluate
+
         let indexOfNewCard = deck.indexOf(newCard)
         deck.splice(indexOfNewCard, 1)
-        if(user_value > 21)
+        evaluateNewUserHand(user_hand)
+        if(user_value > 21 || user_value === 21){
+          hitFunction(user_value)
+          //console.log(user_value);
+        }
         // if(user_value > 21){
         //   console.log(user_value);
         //   textUpdates.innerText = "Can't hit!"
@@ -232,6 +240,27 @@ fetch(scoreURL)
       }
 
     })
+  }
+  function evaluateNewUserHand(user_hand){
+    //console.log(user_hand);
+    let totalValue = user_hand.map(card => {
+      return card.CardValue
+       //console.log(totalValue);
+    })
+    //console.log(totalValue);
+    //return totalValue
+    let addedUserCards = totalValue.reduce((num1, num2) => num1 + num2)
+    //console.log(user_hand);
+    user_value = addedUserCards
+    console.log(user_value);
+    //checkForAcesUser(hand, user_value)
+  }
+  function hitFunction(user_value){
+    if(user_value > 21){
+    textUpdates.innerHTML = "Player Busts! Dealer Wins!"
+  } else {
+    textUpdates.innerHTML = "Player has BlackJack! PlayerWins"
+  }
   }
   eventListener()
  //append the Users Cards to The Page
