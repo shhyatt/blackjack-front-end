@@ -5,33 +5,35 @@ let deck = []
 let user_hand = []
 let dealer_hand = []
 let userRecord = []
-let currentScore
 let suit = cards.suit
 let value = cards.value
-let user_value = 0
-let dealer_value = 0
-
 const body = document.body
+let gamesPlayed = body.querySelector("#games-played")
+let gamesWon = body.querySelector("#games-won")
+let gamesLost = body.querySelector("#games-lost")
+let gamesDrawn = body.querySelector("#games-drawn")
+let gamesRecord
+let winsRecord
+let lossesRecord
+let drawsRecord
 const userCards = body.querySelector("#user-cards")
 const userValue = body.querySelector("#user-card-value")
 const dealerCards = body.querySelector("#dealer-cards")
 const dealerValue = body.querySelector("#dealer-card-value")
-const textUpdates = body.querySelector("#textUpdates")
-
-//console.log(textUpdates);
 
 document.addEventListener("DOMContentLoaded", e => {
 
 const scoreURL = `http://localhost:3000/api/v1/scores` //LOCAL RAILS SERVER
 ////// BEGINNING OF FETCH //////
-// fetch(scoreURL)
-// .then(res => res.json())
-// .then(data => {
-//   userRecord = data
-//   console.log(userRecord[0].hands_drawn, userRecord[0].hands_lost, userRecord[0].hands_played, userRecord[0].hands_won)
-//   // tracker.innerHTML =
-// })
-////// END OF FETCH //////
+fetch(scoreURL)
+.then(res => res.json())
+.then(data => {
+  userRecord = data
+  gamesRecord = userRecord[0].hands_played
+  gamesWon = userRecord[0].hands_won
+  gamesLost = userRecord[0].hands_lost
+  gamesDrawn = userRecord[0].hands_drawn
+})
 
 // creates the deck for the game and sets the value of each card!!!!!
   function createDeck(){
@@ -210,11 +212,12 @@ const scoreURL = `http://localhost:3000/api/v1/scores` //LOCAL RAILS SERVER
         user_hand.push(newCard)
         let indexOfNewCard = deck.indexOf(newCard)
         deck.splice(indexOfNewCard, 1)
-        if(user_value > 21){
-          console.log(user_value);
-          textUpdates.innerText = "Can't hit!"
-          compareValues(dealer_value, user_value)
-        }
+        if(user_value > 21)
+        // if(user_value > 21){
+        //   console.log(user_value);
+        //   textUpdates.innerText = "Can't hit!"
+        //   compareValues(dealer_value, user_value)
+        // }
         console.log(user_value);
 
         //console.log(deck);
